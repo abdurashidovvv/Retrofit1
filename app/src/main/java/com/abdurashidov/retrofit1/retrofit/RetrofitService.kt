@@ -1,0 +1,1 @@
+package com.abdurashidov.retrofit1.retrofitimport com.abdurashidov.retrofit1.models.Planimport okhttp3.Callimport retrofit2.http.GETinterface RetrofitService {    @GET("plan")    fun getAllTodo():retrofit2.Call<ArrayList<Plan>>}

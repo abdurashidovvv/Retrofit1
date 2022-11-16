@@ -1,0 +1,1 @@
+package com.abdurashidov.retrofit1.modelsdata class Plan(    val id: Int,    val holat: String,    val matn: String,    val oxirgi_muddat: String,    val sarlavha: String)
