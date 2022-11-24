@@ -40,32 +40,34 @@ class MainActivity : AppCompatActivity(), RvAdapter.RvClick {
 
     private fun getData() {
         ApiClient.getRetrofitService().getAllTodo().enqueue(object : Callback<ArrayList<Plan>> {
-                override fun onResponse(
-                    call: Call<ArrayList<Plan>>, response: Response<ArrayList<Plan>>
-                ) {
-                    rvAdapter = RvAdapter(response.body()!!, this@MainActivity)
-                    binding.myRv.adapter = rvAdapter
-                }
+            override fun onResponse(
+                call: Call<ArrayList<Plan>>, response: Response<ArrayList<Plan>>
+            ) {
+                rvAdapter = RvAdapter(response.body()!!, this@MainActivity)
+                binding.myRv.adapter = rvAdapter
+            }
 
-                override fun onFailure(call: Call<ArrayList<Plan>>, t: Throwable) {
-                    Toast.makeText(
-                        this@MainActivity, "Internet bilan muammo bor.", Toast.LENGTH_SHORT
-                    ).show()
-                }
-            })
+            override fun onFailure(call: Call<ArrayList<Plan>>, t: Throwable) {
+                Toast.makeText(
+                    this@MainActivity, "Internet bilan muammo bor.", Toast.LENGTH_SHORT
+                ).show()
+            }
+        })
     }
 
     private fun postData() {
         val dialog = AlertDialog.Builder(this).create()
         val dialogItemBinding = DialogItemBinding.inflate(layoutInflater)
         dialog.setView(dialogItemBinding.root)
+        dialog.show()
 
         dialogItemBinding.apply {
             save.setOnClickListener {
+                Toast.makeText(this@MainActivity, "Save button click!", Toast.LENGTH_SHORT).show()
                 val addTodoRequest = AddTodoRequest(
                     holat = status.selectedItem.toString(),
                     matn = text.text.toString(),
-                    oxirgi_muddat = deadline.toString(),
+                    oxirgi_muddat = deadline.text.toString(),
                     sarlavha = title.text.toString()
                 )
                 ApiClient.getRetrofitService().addTodo(addTodoRequest)
@@ -77,7 +79,6 @@ class MainActivity : AppCompatActivity(), RvAdapter.RvClick {
                                     "${response.body()?.sarlavha} saqlandi!",
                                     Toast.LENGTH_SHORT
                                 ).show()
-                                dialog.cancel()
                                 getData()
                             }
                         }
@@ -90,10 +91,10 @@ class MainActivity : AppCompatActivity(), RvAdapter.RvClick {
                             ).show()
                         }
                     })
+                dialog.cancel()
             }
         }
 
-        dialog.show()
     }
 
     override fun onClick(label: Plan) {
