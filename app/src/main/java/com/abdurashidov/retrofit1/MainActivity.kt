@@ -12,13 +12,17 @@ import com.abdurashidov.retrofit1.databinding.DialogItemBinding
 import com.abdurashidov.retrofit1.models.AddTodoRequest
 import com.abdurashidov.retrofit1.models.Plan
 import com.abdurashidov.retrofit1.retrofit.ApiClient
+import com.abdurashidov.retrofit1.utils.MyObservable
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class MainActivity : AppCompatActivity(), RvAdapter.RvClick {
+
     private lateinit var binding: ActivityMainBinding
     private lateinit var rvAdapter: RvAdapter
+    private lateinit var myObservable: MyObservable
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -26,6 +30,8 @@ class MainActivity : AppCompatActivity(), RvAdapter.RvClick {
 
         getData()
 
+        myObservable=MyObservable()
+        lifecycle.addObserver(myObservable)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
