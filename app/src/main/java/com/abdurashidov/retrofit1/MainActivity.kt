@@ -13,6 +13,7 @@ import com.abdurashidov.retrofit1.models.AddTodoRequest
 import com.abdurashidov.retrofit1.models.Plan
 import com.abdurashidov.retrofit1.retrofit.ApiClient
 import com.abdurashidov.retrofit1.utils.MyObservable
+import com.abdurashidov.retrofit1.viewmodel.MyViewModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -30,7 +31,7 @@ class MainActivity : AppCompatActivity(), RvAdapter.RvClick {
 
         getData()
 
-        myObservable=MyObservable()
+        myObservable= MyObservable()
         lifecycle.addObserver(myObservable)
     }
 
@@ -45,20 +46,13 @@ class MainActivity : AppCompatActivity(), RvAdapter.RvClick {
     }
 
     private fun getData() {
-        ApiClient.getRetrofitService().getAllTodo().enqueue(object : Callback<ArrayList<Plan>> {
-            override fun onResponse(
-                call: Call<ArrayList<Plan>>, response: Response<ArrayList<Plan>>
-            ) {
-                rvAdapter = RvAdapter(response.body()!!, this@MainActivity)
-                binding.myRv.adapter = rvAdapter
-            }
 
-            override fun onFailure(call: Call<ArrayList<Plan>>, t: Throwable) {
-                Toast.makeText(
-                    this@MainActivity, "Internet bilan muammo bor.", Toast.LENGTH_SHORT
-                ).show()
+        val myViewModel=MyViewModel()
+        myViewModel.getMyTodo()
+            .observe(this){
+                rvAdapter=RvAdapter(it, this)
+                binding.myRv.adapter=rvAdapter
             }
-        })
     }
 
     private fun postData() {
